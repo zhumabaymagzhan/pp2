@@ -1,17 +1,20 @@
-import json 
+import json
 
+file_path = "C:\\Users\\jumab\\Downloads\\sample-data.json"
 
-print("Interface status")
-print("================================================================================")
-print("DN                                                 Description           Speed    MTU  ")
-print("-------------------------------------------------- --------------------  ------  ------")
+with open(file_path, "r", encoding="utf-8") as file:
+    data = json.load(file)
 
-with open('json/sample-data.json') as f:
-    data = json.load(f)
+print("Interface Status")
+print("=" * 80)
+print("{:<50} {:<15} {:<10} {:<10}".format("DN", "Description", "Speed", "MTU"))
+print("-" * 80)
 
-request_from_server = data["imdata"][0]["l1PhysIf"]["attributes"]["dn"]
-speed = data["imdata"][0]["l1PhysIf"]["attributes"]["fecMode"]
-mtu = data["imdata"][0]["l1PhysIf"]["attributes"]["mtu"]
-print(request_from_server, "                            ", speed," ", mtu )
-print(request_from_server, "                            ", speed," ", mtu )
-print(request_from_server, "                            ", speed," ", mtu )
+for item in data["imdata"]:
+    attributes = item["l1PhysIf"]["attributes"]
+    dn = attributes["dn"]
+    descr = attributes["descr"] if attributes["descr"] else "N/A"
+    speed = attributes["speed"]
+    mtu = attributes["mtu"]
+
+    print("{:<50} {:<15} {:<10} {:<10}".format(dn, descr, speed, mtu))
